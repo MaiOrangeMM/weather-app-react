@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function BOCurrentInfo() {
+export default function BOCurrentInfo({ temp, updateCity }) {
   return (
     <div className="row pt-5 pb-5">
       <div className="col-7">
@@ -8,14 +8,14 @@ export default function BOCurrentInfo() {
           <i className="fas fa-compass text-light"></i>
         </a>
         <h1 className="h5 py-0 my-0 text-light" id="display-city">
-          [Current City]
+          {updateCity}
         </h1>
         <p className="h6 py-0 my-0 text-light" id="display-date">
           [Date] | [Time]
         </p>
         <div className="d-flex">
           <p className="h2 px-0 mx-0 text-light pe-1" id="display-temp">
-            [Current Temp]
+            {temp}
           </p>
           <a
             href="#"

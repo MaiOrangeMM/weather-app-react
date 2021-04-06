@@ -6,16 +6,13 @@ import { apiUrlCurrent } from "./Api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
-export default function BOSearchBar() {
+export default function BOSearchBar({ setTemp, setUpdateCity }) {
   const [city, setCity] = useState("");
-  const [updateCity, setUpdateCity] = useState("");
-  const [temp, setTemp] = useState(null);
-  const [description, setDescription] = useState("");
 
   function showCurrent(response) {
+    console.log(response.data.name);
     setTemp(Math.round(response.data.main.temp));
-    setDescription(response.data.weather[0].description);
-    console.log(`${temp} & ${description}`);
+    setUpdateCity(response.data.name);
   }
 
   function handleChange(event) {
@@ -25,7 +22,7 @@ export default function BOSearchBar() {
   function handleSubmit(event) {
     event.preventDefault();
     if (city.length > 0) {
-      setUpdateCity(city);
+      setCity(city);
       axios.get(apiUrlCurrent).then(showCurrent);
     } else {
       console.log("else");
@@ -52,5 +49,3 @@ export default function BOSearchBar() {
     </form>
   );
 }
-
-export const newTemp(temp);

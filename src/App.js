@@ -1,7 +1,6 @@
 import React from "react";
 import Weather from "./Weather";
 
-import bootstrap from "bootstrap";
 import "@popperjs/core/dist/esm/popper";
 
 import "bootstrap/dist/css/bootstrap.min.css";
