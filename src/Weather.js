@@ -7,15 +7,15 @@ import "@fortawesome/free-solid-svg-icons";
 import "@fortawesome/react-fontawesome";
 import "@fortawesome/free-brands-svg-icons";
 
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faThermometerHalf, faWind } from '@fortawesome/free-solid-svg-icons';
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faSearch,
+  faThermometerHalf,
+  faWind,
+} from "@fortawesome/free-solid-svg-icons";
 
 library.add(faWind);
-
-
-
-
 
 function Weather() {
   const [ready, setReady] = useState(false);
@@ -31,7 +31,7 @@ function Weather() {
       maxTemperature: response.data.main.temp_max,
       condition: response.data.weather[0].description,
       windSpeed: response.data.wind.speed,
-      iconUrl: `http://openweathermap.org/img/wn/${response.data.weather[0].icon}.png`
+      iconUrl: `http://openweathermap.org/img/wn/${response.data.weather[0].icon}.png`,
     });
     setReady(true);
   }
@@ -67,11 +67,18 @@ function Weather() {
             <form onSubmit={handleSubmit}>
               <div className="row justify-content-center pb-5">
                 <div className="col-6">
-                  <input type="text" className="form-control" placeholder="Enter your city" onChange={handleCityChange} />
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Enter your city"
+                    onChange={handleCityChange}
+                  />
                 </div>
 
                 <div className="col-1">
-                  <button className="btn btn-danger"><FontAwesomeIcon icon={faSearch} /></button>
+                  <button className="btn btn-danger">
+                    <FontAwesomeIcon icon={faSearch} />
+                  </button>
                 </div>
               </div>
             </form>
@@ -79,13 +86,15 @@ function Weather() {
             <div className="row pt-5 pb-5">
               <div className="col-7">
                 <h1 className="h5 py-0 my-0 text-light">{city}</h1>
-                <p className="h6 py-0 my-0 text-light" >
-                  <FormattedDate date={weatherData.date} /></p>
+                <p className="h6 py-0 my-0 text-light">
+                  <FormattedDate date={weatherData.date} />
+                </p>
                 <div className="d-flex">
-                  <p className="h2 px-0 mx-0 text-light">{Math.round(weatherData.temperature)}</p>
+                  <p className="h2 px-0 mx-0 text-light">
+                    {Math.round(weatherData.temperature)}
+                  </p>
                   <span className="h6 text-light">°C</span>
                 </div>
-
               </div>
             </div>
           </div>
@@ -102,12 +111,17 @@ function Weather() {
               <div className="col-4">
                 <div className="row">
                   <div className="col-2 d-flex justify-content-center">
-                    <img src={weatherData.iconUrl} />
+                    <img
+                      src={weatherData.iconUrl}
+                      alt="weather condition icon"
+                    />
                   </div>
 
                   <div className="col-10">
                     <p className="h6 py-0 my-0">Condition</p>
-                    <p className="h6 py-0 my-0 text-black-50 text-capitalize">{weatherData.condition}</p>
+                    <p className="h6 py-0 my-0 text-black-50 text-capitalize">
+                      {weatherData.condition}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -115,12 +129,18 @@ function Weather() {
               <div className="col-4">
                 <div className="row">
                   <div className="col-2 d-flex justify-content-center">
-                    <FontAwesomeIcon icon={faThermometerHalf} className="fs-2 align-self-center" />
+                    <FontAwesomeIcon
+                      icon={faThermometerHalf}
+                      className="fs-2 align-self-center"
+                    />
                   </div>
 
                   <div className="col-10">
                     <p className="h6 py-0 my-0">Temperature</p>
-                    <p className="h6 py-0 my-0 text-black-50">{Math.round(weatherData.minTemperature)}° | {Math.round(weatherData.maxTemperature)}°</p>
+                    <p className="h6 py-0 my-0 text-black-50">
+                      {Math.round(weatherData.minTemperature)}° |{" "}
+                      {Math.round(weatherData.maxTemperature)}°
+                    </p>
                   </div>
                 </div>
               </div>
@@ -128,12 +148,17 @@ function Weather() {
               <div className="col-4">
                 <div className="row">
                   <div className="col-2 d-flex justify-content-center">
-                    <FontAwesomeIcon icon={faWind} className="fs-3 align-self-center" />
+                    <FontAwesomeIcon
+                      icon={faWind}
+                      className="fs-3 align-self-center"
+                    />
                   </div>
 
                   <div className="col-10">
                     <p className="h6 py-0 my-0">Wind speed</p>
-                    <p className="h6 py-0 my-0 text-black-50">{weatherData.windSpeed} km/h</p>
+                    <p className="h6 py-0 my-0 text-black-50">
+                      {weatherData.windSpeed} km/h
+                    </p>
                   </div>
                 </div>
               </div>
@@ -208,11 +233,10 @@ function Weather() {
               </div>
             </div>
           </div>
-        </div >
-      </section >
+        </div>
+      </section>
     );
-  }
-  else {
+  } else {
     search();
     return "Loading...";
   }
