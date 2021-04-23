@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import FormattedDate from "./FormattedDate";
 import axios from "axios";
 
 import "@fortawesome/fontawesome-svg-core";
@@ -28,165 +29,173 @@ const apiUrlCurrent = `${apiCurrent}${city}${apiMetric}${apiKey}`;
 
 
 
-
 function Weather() {
   const [ready, setReady] = useState(false);
-  const [temperature, setTemperature] = useState(null);
+  const [weatherData, setWeatherData] = useState({});
 
   function handleResponse(response) {
-    console.log(response.data);
-    setTemperature(response.data.main.temp);
+    setWeatherData({
+      city: response.data.name,
+      date: new Date(response.data.dt * 1000),
+      temperature: response.data.main.temp,
+      minTemperature: response.data.main.temp_min,
+      maxTemperature: response.data.main.temp_max,
+      condition: response.data.weather[0].description,
+      windSpeed: response.data.wind.speed
+    });
+
     setReady(true);
   }
 
   if (ready) {
     return (
-      <section class="wrapper d-flex align-items-center justify-content-center">
-        <div class="shadow-lg bg-body ">
-          <div class="box-overview container py-5 px-5">
-            <div class="row justify-content-center pb-5">
-              <div class="col-6">
-                <input type="text" class="form-control" placeholder="Enter your city" />
+      <section className="wrapper d-flex align-items-center justify-content-center">
+        <div className="shadow-lg bg-body ">
+          <div className="box-overview container py-5 px-5">
+            <div className="row justify-content-center pb-5">
+              <div className="col-6">
+                <input type="text" className="form-control" placeholder="Enter your city" />
               </div>
 
-              <div class="col-1">
-                <button class="btn btn-danger"><FontAwesomeIcon icon={faSearch} /></button>
-              </div>
-            </div>
-
-            <div class="row pt-5 pb-5">
-              <div class="col-7">
-                <h1 class="h5 py-0 my-0 text-light">Frankfurt am Main</h1>
-                <p class="h6 py-0 my-0 text-light" >Thu 11 Mar | 09 AM</p>
-                <div class="d-flex">
-                  <p class="h2 px-0 mx-0 text-light">{Math.round(temperature)}</p>
-                  <span class="h6 text-light">°C</span>
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-          <div class="box-detail container py-5 px-5">
-            <div class="row pb-3">
-              <div class="col-7">
-                <p class="h5 py-0 my-0">Details</p>
-                <p class="h6 py-0 my-0 text-black-50">Weather Today</p>
+              <div className="col-1">
+                <button className="btn btn-danger"><FontAwesomeIcon icon={faSearch} /></button>
               </div>
             </div>
 
-            <div class="row pb-5 px-2 gx-5">
-              <div class="col-4">
-                <div class="row">
-                  <div class="col-2 d-flex justify-content-center">
-                    <i class="fas fa-cloud fs-3 align-self-center"></i>
-                  </div>
-
-                  <div class="col-10">
-                    <p class="h6 py-0 my-0">Condition</p>
-                    <p class="h6 py-0 my-0 text-black-50">Cloudy</p>
-                  </div>
+            <div className="row pt-5 pb-5">
+              <div className="col-7">
+                <h1 className="h5 py-0 my-0 text-light">Frankfurt am Main</h1>
+                <p className="h6 py-0 my-0 text-light" >
+                  <FormattedDate date={weatherData.date} /></p>
+                <div className="d-flex">
+                  <p className="h2 px-0 mx-0 text-light">{Math.round(weatherData.temperature)}</p>
+                  <span className="h6 text-light">°C</span>
                 </div>
-              </div>
 
-              <div class="col-4">
-                <div class="row">
-                  <div class="col-2 d-flex justify-content-center">
-                    <FontAwesomeIcon icon={faThermometerHalf} class="fs-2 align-self-center" />
-                  </div>
-
-                  <div class="col-10">
-                    <p class="h6 py-0 my-0">Temperature</p>
-                    <p class="h6 py-0 my-0 text-black-50">-4° | 12°</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-4">
-                <div class="row">
-                  <div class="col-2 d-flex justify-content-center">
-                    <FontAwesomeIcon icon={faWind} class="fs-2 align-self-center" />
-                  </div>
-
-                  <div class="col-10">
-                    <p class="h6 py-0 my-0">Wind speed</p>
-                    <p class="h6 py-0 my-0 text-black-50">5,0 km/h</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row pb-3">
-              <div class="col-7">
-                <p class="h5 py-0 my-0">This Week</p>
-                <p class="h6 py-0 my-0 text-black-50">Weekly Forecast</p>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col">
-                <div class="card shadow-sm">
-                  <div class="card-body text-center">
-                    <p class="card-title">Fri</p>
-                    <i class="fas fa-cloud-sun"></i>
-                    <p class="card-text text-black-50">10° | 12°</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col">
-                <div class="card shadow-sm">
-                  <div class="card-body text-center">
-                    <p class="card-title">Sa</p>
-                    <i class="fas fa-cloud-sun"></i>
-                    <p class="card-text text-black-50">10° | 12°</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col">
-                <div class="card shadow-sm">
-                  <div class="card-body text-center">
-                    <p class="card-title">Su</p>
-                    <i class="fas fa-cloud-sun"></i>
-                    <p class="card-text text-black-50">10° | 12°</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col">
-                <div class="card shadow-sm">
-                  <div class="card-body text-center">
-                    <p class="card-title">Mo</p>
-                    <i class="fas fa-cloud-sun"></i>
-                    <p class="card-text text-black-50">10° | 12°</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col">
-                <div class="card shadow-sm">
-                  <div class="card-body text-center">
-                    <p class="card-title">Tue</p>
-                    <i class="fas fa-cloud-sun"></i>
-                    <p class="card-text text-black-50">10° | 12°</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col">
-                <div class="card shadow-sm">
-                  <div class="card-body text-center">
-                    <p class="card-title">Wed</p>
-                    <i class="fas fa-cloud-sun"></i>
-                    <p class="card-text text-black-50">10° | 12°</p>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+
+          <div className="box-detail container py-5 px-5">
+            <div className="row pb-3">
+              <div className="col-7">
+                <p className="h5 py-0 my-0">Details</p>
+                <p className="h6 py-0 my-0 text-black-50">Weather Today</p>
+              </div>
+            </div>
+
+            <div className="row pb-5 px-2 gx-5">
+              <div className="col-4">
+                <div className="row">
+                  <div className="col-2 d-flex justify-content-center">
+                    <i className="fas fa-cloud fs-3 align-self-center"></i>
+                  </div>
+
+                  <div className="col-10">
+                    <p className="h6 py-0 my-0">Condition</p>
+                    <p className="h6 py-0 my-0 text-black-50 text-capitalize">{weatherData.condition}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-4">
+                <div className="row">
+                  <div className="col-2 d-flex justify-content-center">
+                    <FontAwesomeIcon icon={faThermometerHalf} className="fs-2 align-self-center" />
+                  </div>
+
+                  <div className="col-10">
+                    <p className="h6 py-0 my-0">Temperature</p>
+                    <p className="h6 py-0 my-0 text-black-50">{Math.round(weatherData.minTemperature)}° | {Math.round(weatherData.maxTemperature)}°</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-4">
+                <div className="row">
+                  <div className="col-2 d-flex justify-content-center">
+                    <FontAwesomeIcon icon={faWind} className="fs-3 align-self-center" />
+                  </div>
+
+                  <div className="col-10">
+                    <p className="h6 py-0 my-0">Wind speed</p>
+                    <p className="h6 py-0 my-0 text-black-50">{weatherData.windSpeed} km/h</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="row pb-3">
+              <div className="col-7">
+                <p className="h5 py-0 my-0">This Week</p>
+                <p className="h6 py-0 my-0 text-black-50">Weekly Forecast</p>
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col">
+                <div className="card shadow-sm">
+                  <div className="card-body text-center">
+                    <p className="card-title">Fri</p>
+                    <i className="fas fa-cloud-sun"></i>
+                    <p className="card-text text-black-50">10° | 12°</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col">
+                <div className="card shadow-sm">
+                  <div className="card-body text-center">
+                    <p className="card-title">Sa</p>
+                    <i className="fas fa-cloud-sun"></i>
+                    <p className="card-text text-black-50">10° | 12°</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col">
+                <div className="card shadow-sm">
+                  <div className="card-body text-center">
+                    <p className="card-title">Su</p>
+                    <i className="fas fa-cloud-sun"></i>
+                    <p className="card-text text-black-50">10° | 12°</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col">
+                <div className="card shadow-sm">
+                  <div className="card-body text-center">
+                    <p className="card-title">Mo</p>
+                    <i className="fas fa-cloud-sun"></i>
+                    <p className="card-text text-black-50">10° | 12°</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col">
+                <div className="card shadow-sm">
+                  <div className="card-body text-center">
+                    <p className="card-title">Tue</p>
+                    <i className="fas fa-cloud-sun"></i>
+                    <p className="card-text text-black-50">10° | 12°</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col">
+                <div className="card shadow-sm">
+                  <div className="card-body text-center">
+                    <p className="card-title">Wed</p>
+                    <i className="fas fa-cloud-sun"></i>
+                    <p className="card-text text-black-50">10° | 12°</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div >
+      </section >
     );
   }
   else {
