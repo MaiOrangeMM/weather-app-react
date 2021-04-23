@@ -13,18 +13,6 @@ import { faSearch, faThermometerHalf, faWind } from '@fortawesome/free-solid-svg
 
 library.add(faWind);
 
-// API
-const apiKey = "&appid=ea446638ab71304f56de134b4323492c";
-const apiMetric = "&units=metric";
-
-const city = "London";
-
-// Current
-const apiCurrent = "https://api.openweathermap.org/data/2.5/weather?q=";
-const apiUrlCurrent = `${apiCurrent}${city}${apiMetric}${apiKey}`;
-
-// Forecast
-// const apiForecast = "https://api.openweathermap.org/data/2.5/onecall?";
 
 
 
@@ -32,6 +20,7 @@ const apiUrlCurrent = `${apiCurrent}${city}${apiMetric}${apiKey}`;
 function Weather() {
   const [ready, setReady] = useState(false);
   const [weatherData, setWeatherData] = useState({});
+  const [city, setCity] = useState("Wiesbaden");
 
   function handleResponse(response) {
     setWeatherData({
@@ -41,10 +30,33 @@ function Weather() {
       minTemperature: response.data.main.temp_min,
       maxTemperature: response.data.main.temp_max,
       condition: response.data.weather[0].description,
-      windSpeed: response.data.wind.speed
+      windSpeed: response.data.wind.speed,
+      iconUrl: `http://openweathermap.org/img/wn/${response.data.weather[0].icon}.png`
     });
-
     setReady(true);
+  }
+
+  function search() {
+    // API
+    const apiKey = "&appid=ea446638ab71304f56de134b4323492c";
+    const apiMetric = "&units=metric";
+
+    // Current
+    const apiCurrent = "https://api.openweathermap.org/data/2.5/weather?q=";
+    const apiUrlCurrent = `${apiCurrent}${city}${apiMetric}${apiKey}`;
+
+    // Forecast
+    // const apiForecast = "https://api.openweathermap.org/data/2.5/onecall?";
+    axios.get(apiUrlCurrent).then(handleResponse);
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    search();
+  }
+
+  function handleCityChange(event) {
+    setCity(event.target.value);
   }
 
   if (ready) {
@@ -52,19 +64,21 @@ function Weather() {
       <section className="wrapper d-flex align-items-center justify-content-center">
         <div className="shadow-lg bg-body ">
           <div className="box-overview container py-5 px-5">
-            <div className="row justify-content-center pb-5">
-              <div className="col-6">
-                <input type="text" className="form-control" placeholder="Enter your city" />
-              </div>
+            <form onSubmit={handleSubmit}>
+              <div className="row justify-content-center pb-5">
+                <div className="col-6">
+                  <input type="text" className="form-control" placeholder="Enter your city" onChange={handleCityChange} />
+                </div>
 
-              <div className="col-1">
-                <button className="btn btn-danger"><FontAwesomeIcon icon={faSearch} /></button>
+                <div className="col-1">
+                  <button className="btn btn-danger"><FontAwesomeIcon icon={faSearch} /></button>
+                </div>
               </div>
-            </div>
+            </form>
 
             <div className="row pt-5 pb-5">
               <div className="col-7">
-                <h1 className="h5 py-0 my-0 text-light">Frankfurt am Main</h1>
+                <h1 className="h5 py-0 my-0 text-light">{city}</h1>
                 <p className="h6 py-0 my-0 text-light" >
                   <FormattedDate date={weatherData.date} /></p>
                 <div className="d-flex">
@@ -88,7 +102,7 @@ function Weather() {
               <div className="col-4">
                 <div className="row">
                   <div className="col-2 d-flex justify-content-center">
-                    <i className="fas fa-cloud fs-3 align-self-center"></i>
+                    <img src={weatherData.iconUrl} />
                   </div>
 
                   <div className="col-10">
@@ -199,7 +213,7 @@ function Weather() {
     );
   }
   else {
-    axios.get(apiUrlCurrent).then(handleResponse);
+    search();
     return "Loading...";
   }
 }
