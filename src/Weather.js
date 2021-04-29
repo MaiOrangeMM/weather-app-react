@@ -15,8 +15,9 @@ import {
   faThermometerHalf,
   faWind,
 } from "@fortawesome/free-solid-svg-icons";
+import { faGithubSquare } from "@fortawesome/free-brands-svg-icons";
 
-library.add(faWind);
+library.add();
 
 function Weather() {
   const [ready, setReady] = useState(false);
@@ -25,6 +26,7 @@ function Weather() {
 
   function handleResponse(response) {
     setWeatherData({
+      coord: response.data.coord,
       city: response.data.name,
       date: new Date(response.data.dt * 1000),
       temperature: response.data.main.temp,
@@ -86,7 +88,8 @@ function Weather() {
 
             <div className="row pt-5 pb-5">
               <div className="col-7">
-                <h1 className="h5 py-0 my-0 text-light">{city}</h1>
+                <h1 className="h5 py-0 my-0 text-light">{weatherData.city}</h1>
+
                 <p className="h6 py-0 my-0 text-light">
                   <FormattedDate date={weatherData.date} />
                 </p>
@@ -172,7 +175,15 @@ function Weather() {
               </div>
             </div>
 
-            <WeatherForecast />
+            <WeatherForecast coords={weatherData.coord} />
+          </div>
+          <div className="text-center pb-4">
+            <a href="https://github.com/MayElectric/weather-app-react">
+              <FontAwesomeIcon
+                icon={faGithubSquare}
+                className="fs-3 text-dark"
+              />
+            </a>
           </div>
         </div>
       </section>
