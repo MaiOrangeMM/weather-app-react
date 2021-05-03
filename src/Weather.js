@@ -48,8 +48,6 @@ function Weather() {
     const apiCurrent = "https://api.openweathermap.org/data/2.5/weather?q=";
     const apiUrlCurrent = `${apiCurrent}${city}${apiMetric}${apiKey}`;
 
-    // Forecast
-    // const apiForecast = "https://api.openweathermap.org/data/2.5/onecall?";
     axios.get(apiUrlCurrent).then(handleResponse);
   }
 
